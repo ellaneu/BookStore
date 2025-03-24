@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Book } from './types/Book';
 
-function BookList() {
+function BookList({selectedCategories} : {selectedCategories: string[]}) {
   // State variables for book data, pagination, and sorting
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5); // Number of books per page
@@ -13,9 +13,11 @@ function BookList() {
   // Fetch book data whenever pagination or total items change
   useEffect(() => {
     const fetchBook = async () => {
+
+      const categoryParams = selectedCategories.map((cat) => `category=${encodeURIComponent(cat)}`).join('&');
       try {
         const response = await fetch(
-          `https://localhost:5000/Book?pageSize=${pageSize}&pageNum=${pageNum}`
+          `https://localhost:5000/Book?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
         );
         const data = await response.json();
         setBooks(data.books);
@@ -26,7 +28,7 @@ function BookList() {
       }
     };
     fetchBook();
-  }, [pageSize, pageNum, totalItems]);
+  }, [pageSize, pageNum, totalItems, selectedCategories]);
 
   // Toggle sorting order between ascending and descending
   const toggleSortOrder = () => {
@@ -42,8 +44,6 @@ function BookList() {
 
   return (
     <div className="container mt-4">
-      {/* Page Title */}
-      <h1 className="text-center mb-4">Book List</h1>
 
       {/* Sort Button */}
       <button className="btn btn-primary mb-3" onClick={toggleSortOrder}>

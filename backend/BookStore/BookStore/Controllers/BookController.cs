@@ -17,20 +17,36 @@ namespace BookStore.Controllers
         }
         
         [HttpGet(Name = "GetBooks")]
-        public IActionResult Get(int pageSize = 5, int pageNum = 1)
+        public IActionResult Get(int pageSize = 5, int pageNum = 1, [FromQuery] List<string>? category = null)
         {
-            var bookList = _bookContext.Books
+            var query = _bookContext.Books.AsQueryable();
+
+            if (category != null && category.Any())
+            {
+                query = query.Where(b => category.Contains(b.Category));
+            }
+            
+            var totalNumBooks = query.Count();
+            
+            var bookList = query
                 .Skip((pageNum - 1) * pageSize)   
                 .Take(pageSize)
                 .ToList();
-            
-            var totalNumBooks = _bookContext.Books.Count();
 
             return Ok(new
             {
                 Books = bookList,
                 TotalNumBooks = totalNumBooks
             });
+        }
+
+        [HttpGet("GetBookTypes")]
+        public IActionResult GetBookTypes()
+        {
+            var bookTypes = _bookContext.Books.Select(b => b.Category).Distinct().ToList();
+            
+            return Ok(bookTypes);
+            
         }
     
     }
