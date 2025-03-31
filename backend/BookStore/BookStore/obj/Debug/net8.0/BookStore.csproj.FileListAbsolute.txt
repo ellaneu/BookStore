@@ -66,3 +66,4 @@
 /Users/ellaneumarker/RiderProjects/BookStore/backend/BookStore/BookStore/obj/Debug/net8.0/BookStore.genruntimeconfig.cache
 /Users/ellaneumarker/RiderProjects/BookStore/backend/BookStore/BookStore/obj/Debug/net8.0/ref/BookStore.dll
 /Users/ellaneumarker/RiderProjects/BookStore/backend/BookStore/BookStore/obj/Debug/net8.0/BookStore.sourcelink.json
+/Users/ellaneumarker/RiderProjects/BookStore/backend/BookStore/BookStore/bin/Debug/net8.0/Bookstore.sqlite
